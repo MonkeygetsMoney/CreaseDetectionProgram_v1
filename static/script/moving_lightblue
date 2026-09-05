@@ -10,9 +10,9 @@ function setup() {
     topG = 255
     topB = 255
 
-    bottomR = 240
-    bottomG = 0
-    bottomB = 0
+    bottomR = 95
+    bottomG = 149
+    bottomB = 237
 }
 
 function draw() {
