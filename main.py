@@ -6,6 +6,8 @@ import math
 import numpy as np
 import threading
 
+#install flask, openCV, and livereload
+
 def nothing(x):
     pass
 
@@ -126,7 +128,7 @@ def index():
             rcrease = refframe()
             if matches(ccrease, rcrease):
                 print(f'MATCH', flush=True)
-                return render_template('main.html')
+                return render_template('main2.html')
             else:
                 print('No match', flush=True)
                 return render_template('start.html')
