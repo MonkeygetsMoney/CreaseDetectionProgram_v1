@@ -42,7 +42,7 @@ function draw() {
             //use 'x' would print a stationary gradient
         }
     }
-    else{
+    else if (b<250) {
         b+=2;
         speed = easeOut(b);
         speed = constrain(speed, 0, 250)
@@ -62,7 +62,7 @@ function draw() {
     }
 
 //second fold
-    if (second == true){
+    else if (c < 250) {
         c += 2;
         speed = easeOut(c)
         speed = constrain(speed, 0, 250)
