@@ -82,6 +82,30 @@ function draw() {
                 stroke(linecolor);
                 line(250+x, 0, 250+x, 500);
             }
+
+        if (a == 250) {
+            stateMachine.increase();
+            a = 0;
+        }
+    }
+
+    else if (stateMachine.state === 'state_2') {
+        a += 2;
+        speed = easeOut(a)
+        speed = constrain(speed, 0, 250)
+        for (x = 0; x<height/2; x++) {
+            linecolor = lerpColor(topColor, bottomColor, speed/250);
+            stroke(linecolor);
+            line(0, speed, 250, speed);
+        }
+
+        for (x = 0; x<height/2; x++) {
+        linecolor = lerpColor(topColor, bottomColor, speed/250);
+        stroke(linecolor);
+        line(0, 500-speed, 250, 500-speed);
+            //use 'a' for moving the gradient
+            //use 'x' would print a stationary gradient
+        }
     }
 
 }
