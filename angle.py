@@ -1,12 +1,9 @@
-from flask import Flask, render_template, redirect, url_for
-from livereload import Server
-from pathlib import Path
-import cv2 
+#this would test whether the program currently run can detect multiple lines on a paper
+#At the same time, test whether it can filter out unwanted lines
+
+import cv2
 import math
 import numpy as np
-import threading
-
-#install flask, openCV, and livereload
 
 def nothing(x):
     pass
@@ -20,11 +17,12 @@ def getcreaseline(img, threshold):
     blur = cv2.GaussianBlur(gray, (3,3), 1)
     edges = cv2.Canny(blur, 60, 60)
     lines = cv2.HoughLines(edges, 1, np.pi/180, threshold)
+    lines_coord = cv2.HoughLinesP(edges, 1, np.pi/180, threshold)
 
-    return lines
+    return lines_coord, lines
 
 def resultlines(img, threshold):
-    lines = getcreaseline(img, threshold)
+    _, lines = getcreaseline(img, threshold)
     if lines is None:
         return None
 
@@ -39,17 +37,18 @@ def resultlines(img, threshold):
             rho,theta = line[0]
             line_angle = (math.degrees(theta) + 90) % 180
             diff = min(abs(line_angle - expected_angle[i]), 180 - abs(line_angle - expected_angle[i]))
-            if diff < 30:
+            if diff < 0.9:
                 candidates.append((rho, line_angle))
-            
-        if not candidates:
-            return None
-            #if none found, return None
-            
+                
+            if not candidates:
+                return None
+                #if none found, return None
+
         candidates.sort(key = lambda c: abs(c[1] - expected_angle[i]))
         #this sort the values in candidates list from closest to farthest compare to the expectedangle value
-            
-        resultangles.append((candidates[0]))
+
+    for candidate in candidates:                 
+        resultangles.append((candidate))
             
     return resultangles
 
@@ -113,60 +112,25 @@ def refframe():
     else:
         return None
 
-app = Flask(__name__)
+camera = cv2.VideoCapture(0)
+x, y, w, h = 750, 350, 500, 500
+linex = x+w/2
+liney = y+h/2
 
-@app.route('/')
-def index():
-    path = Path('media/picture1.jpg')
-    if path.exists():
-        file = 'media/picture1.jpg'
-        read = cv2.imread(file)
-        result2 = resultlines(read, 56)
-
-        if result2 is not None:
-            ccrease = result2
-            rcrease = refframe()
-            if matches(ccrease, rcrease):
-                print(f'MATCH', flush=True)
-                return render_template('mountain.html')
-            else:
-                print('No match', flush=True)
-                return render_template('start.html')
-        else:
-            print('No crease detected')
-            return render_template('start.html')
-    else:
-        return render_template('start.html')
-
-def run_flaskreloader():
-    server = Server(app.wsgi_app)
-    server.serve(port=5000, debug=False)
-    #app.run(debug=True, use_reloader = False)
-
-if __name__ == '__main__':
-
-    flask_thread = threading.Thread(target=run_flaskreloader, daemon=True)
-    flask_thread.start()
-
-    camera = cv2.VideoCapture(0)
-    x, y, w, h = 750, 350, 500, 500
-    linex = x+w/2
-    liney = y+h/2
-
-    counter = 1
+counter = 1
     #for the saved images
 
-    none = np.zeros((250, 500, 3), np.uint8)
+none = np.zeros((250, 500, 3), np.uint8)
     #window with black background
 
-    cv2.namedWindow('empty', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('empty', 200, 200)
-    cv2.createTrackbar('threshold', 'empty', 56, 200, nothing)
+cv2.namedWindow('empty', cv2.WINDOW_NORMAL)
+cv2.resizeWindow('empty', 200, 200)
+cv2.createTrackbar('threshold', 'empty', 56, 200, nothing)
 
-    cv2.namedWindow('Live Feed', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('Live Feed', 600, 600)
+cv2.namedWindow('Live Feed', cv2.WINDOW_NORMAL)
+cv2.resizeWindow('Live Feed', 600, 600)
 
-    while(True):
+while(True):
         ret, frame = camera.read()
         if not ret:
             break
@@ -188,11 +152,33 @@ if __name__ == '__main__':
             filename = f'picture1.jpg'
             saved = f'media/{filename}'
             cv2.imwrite(saved, roi)
+            file = 'media/picture1.jpg'
+            read = cv2.imread(file)
+            result = resultlines(read, 56)
+            cart_coor, hough_coor = getcreaseline(read, 56)
+
+            if result is not None:
+                ccrease = result
+                length = len(ccrease)
+                rcrease = refframe()
+                #print(f'This is before filter: hough is {hough_coor} and cartesian is {cart_coor}')
+                #print(f'The number of lines are {len(hough_coor)} and {len(cart_coor)}')
+                print(f'This after filter: line are {ccrease} and length is {length}')
+
+                #draw the lines
+                point1, point2 = linedrawn(ccrease)
+                for i in range(len(ccrease)):
+                    x1, y1 = point1[i][0][0], point1[i][1][0]
+                    x2, y2 = point2[i][0][0], point2[i][1][0]
+                    print(f'The coordinates are {x1, y1, x2, y2}')
+                    line = cv2.line(roi, (x1, y1), (x2, y2), (255, 255, 255), 1)
+
+            cv2.imshow(f'Lines on paper', roi)
         
             #cv2.imshow(f'paper1', roi)
                 #counter += 1
         if key == ord('q'):
             break
 
-    camera.release()
-    cv2.destroyAllWindows()
+camera.release()
+cv2.destroyAllWindows()

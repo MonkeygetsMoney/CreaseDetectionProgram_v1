@@ -24,17 +24,17 @@ function draw() {
     const bottomColor = color(endR, endG, endB);
 
     if (a<250) {
-        a += 2;
+        a += 1;
         speed = easeOut(a)
         speed = constrain(speed, 0, 250)
         for (x = 0; x < height/2; x++) {
-            linecolor = lerpColor(topColor, bottomColor, a/250);
+            linecolor = lerpColor(topColor, bottomColor, speed/250);
             stroke(linecolor);
             line(250-speed, 0, 250-speed, 500);
         }
 
         for (x = 0; x < height/2; x++) {
-            linecolor = lerpColor(topColor, bottomColor, a/250);
+            linecolor = lerpColor(topColor, bottomColor, speed/250);
             stroke(linecolor);
             line(250+speed, 0, 250+speed, 500);
             //use 'a' for moving the gradient

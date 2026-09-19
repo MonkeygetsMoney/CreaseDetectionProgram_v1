@@ -24,7 +24,7 @@ function draw() {
     const bottomColor = color(endR, endG, endB);
 
     if (a<250) {
-        a += 2;
+        a += 1;
         speed = easeOut(a)
         speed = constrain(speed, 0, 250)
         for (x = 0; x < height/2; x++) {
