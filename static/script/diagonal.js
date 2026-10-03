@@ -9,7 +9,7 @@ const stateMachine = {
         state_5: { increase: 'state_6', decrease: 'state_4' },
         state_6: { increase: 'state_7', decrease: 'state_5' },
         state_7: { increase: 'state_8', decrease: 'state_6' },
-        state_8: { increase: 'state_9', decrease: 'state_7' },
+        state_8: { increase: 'state_0', decrease: 'state_7' },
         
     },
 
@@ -215,6 +215,24 @@ function draw(){
         if (a == 500) {
             stateMachine.increase();
             a = 0;
+        }
+    }
+
+    else if (stateMachine.state === 'state_8') {
+        a += 1;
+        speed = easeOut(a);
+        speed = constrain(speed, 0, 250);
+        for (x=0; x<height/2; x++) {
+            linecolor = lerpColor(topColor, bottomColor, speed/250);
+            stroke(linecolor);
+            line(250, 250, 0+speed, 500);
+            line(250, 250, 250+speed, 500);
+            line(250, 250, 500, 500-speed);
+            line(250, 250, 500, 250-speed);
+            line(250, 250, 500-speed, 0);
+            line(250, 250, 250-speed, 0);
+            line(250, 250, 0, 0+speed);
+            line(250, 250, 0, 250+speed);
         }
     }
 }
