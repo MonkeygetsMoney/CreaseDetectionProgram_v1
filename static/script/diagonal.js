@@ -9,7 +9,7 @@ const stateMachine = {
         state_5: { increase: 'state_6', decrease: 'state_4' },
         state_6: { increase: 'state_7', decrease: 'state_5' },
         state_7: { increase: 'state_8', decrease: 'state_6' },
-        state_8: { increase: 'state_0', decrease: 'state_7' },
+        state_8: { increase: 'state_9', decrease: 'state_7' },
         
     },
 
