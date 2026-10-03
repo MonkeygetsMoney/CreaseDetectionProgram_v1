@@ -15,7 +15,8 @@ const stateMachine = {
     },
 
     decrease() {
-        this.state = this.transitions[this.state]. decrease;
+        this.state = this.transitions[this.state].decrease;
+        return this.state;
     },
 }
 

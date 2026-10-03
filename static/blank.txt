@@ -1,0 +1,41 @@
+a += 1;
+        speed = easeOut(a);
+        speed = constrain(speed, 0, height);
+        for (x=0; x<height; x++) {
+            linecolor = lerpColor(topColor, bottomColor, speed/height);
+            stroke(linecolor);
+            line(0+speed, 500, 0, 0+speed);
+        }
+
+        for (x=0; x<height; x++) {
+            linecolor = lerpColor(topColor, bottomColor, speed/height);
+            stroke(linecolor);
+            line(0, 500-speed, 0-speed, 0);
+        }
+
+        if (a == 500) {
+            stateMachine.increase();
+            a = 0;
+        }
+
+unintentionally but this creates a pretty cool effect
+
+a += 1;
+        speed = easeOut(a);
+        speed = constrain(speed, 0, height);
+        for (x=0; x<height; x++) {
+            linecolor = lerpColor(topColor, bottomColor, speed/height);
+            stroke(linecolor);
+            line(0, 0+speed, 500, 500-speed);
+        }
+
+        for (x=0; x<height; x++) {
+            linecolor = lerpColor(topColor, bottomColor, speed/height);
+            stroke(linecolor);
+            line(0, 0+speed, 500, 500-speed);
+        }
+
+        if (a == 500) {
+            stateMachine.increase();
+            a = 0;
+        }
