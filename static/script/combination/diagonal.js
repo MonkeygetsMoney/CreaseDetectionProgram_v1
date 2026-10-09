@@ -19,8 +19,8 @@ const stateMachine = {
     },
 
     decrease() {
-        this.state = thise.transitions[this.state].decrease;
-        return this.state
+        this.state = this.transitions[this.state].decrease;
+        return this.state;
     }
 }
 
@@ -44,6 +44,8 @@ function draw(){
     const topColor = color(startR, startG, startB);
     const bottomColor = color(endR, endG, endB);
 
+    // comment provide description on each states
+    // middle crease vertical mountain fold appearing
     if (stateMachine.state === 'state_0') {
         a += 1;
         speed = easeOut(a);
@@ -66,6 +68,7 @@ function draw(){
         }
     }
 
+    // middle crease vertical mountain fold disappearing
     else if (stateMachine.state === 'state_1') {
         a += 1;
         speed = easeOut(a);
@@ -88,6 +91,7 @@ function draw(){
         }
     }
 
+    // middle crease horizontal mountain fold appearing
     else if (stateMachine.state === 'state_2') {
         a += 1;
         speed = easeOut(a);
@@ -110,6 +114,7 @@ function draw(){
         }
     }
 
+    // middle crease horizontal mountain fold disappearing
     else if (stateMachine.state === 'state_3') {
         a += 1;
         speed = easeOut(a);
@@ -132,6 +137,7 @@ function draw(){
         }
     }
 
+    // diagonal crease mountain fold appearing (top right to bottom left)
     else if (stateMachine.state === 'state_4') {
         a += 1;
         speed = easeOut(a);
@@ -153,6 +159,8 @@ function draw(){
             a = 0;
         }
     }
+
+    // diagonal crease mountain fold disappearing (top right to bottom left)
     else if (stateMachine.state === 'state_5') {
         a += 1;
         speed = easeOut(a);
@@ -174,6 +182,8 @@ function draw(){
             a = 0;
         }
     }
+
+    // diagonal crease mountain fold appearing (top left to bottom right)
     else if (stateMachine.state === 'state_6') {
         a += 1;
         speed = easeOut(a);
@@ -196,6 +206,7 @@ function draw(){
         }
     }
 
+    // diagonal crease mountain fold disappearing (top left to bottom right)
     else if (stateMachine.state === 'state_7') {
         a += 1;
         speed = easeOut(a);
@@ -218,6 +229,7 @@ function draw(){
         }
     }
 
+    // little combination of all folds together
     else if (stateMachine.state === 'state_8') {
         a += 1;
         speed = easeOut(a);
