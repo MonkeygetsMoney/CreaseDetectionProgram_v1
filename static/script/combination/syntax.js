@@ -39,8 +39,8 @@ function draw() {
     speed = easeOut(a);
     speed = constrain(speed, 0, 250);
         linecolor = lerpColor(topColor, bottomColor, speed/250);
-        stroke(linecolor);
-
+        fill(linecolor);
+        circle(250, 250, 200)
         //display frame count
         if (frameCount <= 120) {
             data = frameCount;
