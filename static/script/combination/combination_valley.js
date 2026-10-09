@@ -45,20 +45,27 @@ function draw() {
 
         a += 1;
         speed = easeOut(a);
-        speed = constrain(speed, 0, 250);
+        speed = constrain(speed, 0, 251);
         linecolor = lerpColor(topColor, bottomColor, speed/250);
         stroke(linecolor);
         line(250-speed, 0, 250, 0+speed);
         line(0, 250-speed, 0+speed, 250);
+        line(250+speed, 0, 250, 0+speed);
+        line(500, 250-speed, 500-speed, 250);
+        line(0, 250+speed, 0+speed, 250);
+        line(250-speed, 500, 250, 500-speed);
+        line(250, 500-speed, 250+speed, 500);
+        line(500-speed, 250, 500, 250+speed);
 
-        if (a == 250) {
+        if (a == 251) {
             stateMachine.increase();
             a = 0;
         }
     }
 
     else if (stateMachine.state === 'state_1') {
-        a += 1;
+        // disappearing state (use for loop)
+        a += 1.5;
         speed = easeOut(a);
         speed = constrain(speed, 0, 250);
 
@@ -67,6 +74,12 @@ function draw() {
             stroke(linecolor);
             line(250-x, 0, 250, 0+x);
             line(0, 250-x, 0+x, 250);
+            line(250+x, 0, 250, 0+x);
+            line(500, 250-x, 500-x, 250);
+            line(0, 250+x, 0+x, 250);
+            line(250-x, 500, 250, 500-x);
+            line(250, 500-x, 250+x, 500);
+            line(500-x, 250, 500, 250+x);
 
             // use x because it will first draw out all the line
             // then as speed increase, it would slowly erase all the line
