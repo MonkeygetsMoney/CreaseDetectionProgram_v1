@@ -21,7 +21,7 @@ function draw() {
     a += 1;
     speed = easeOut(a);
     speed = constrain(speed, 0, 250);
-        linecolor = lerpColor(bottomColor, topColor, speed/250);
+        linecolor = lerpColor(topColor, bottomColor, speed/250);
         stroke(linecolor);
         
         // for top left square and bottom right square
@@ -35,6 +35,12 @@ function draw() {
         line(250, 250+speed, 250-speed, 250+speed);
         line(250-speed, 250, 250-speed, 250+speed);
         line(250+speed, 250, 250+speed, 250-speed);
+
+        // produce the same results
+        // line(250+speed, 250-speed, 250+speed, 250+speed);
+        // line(250-speed, 250-speed, 250-speed, 250+speed);
+        // line(250-speed, 250-speed, 250+speed, 250-speed);
+        // line(250-speed, 250+speed, 250+speed, 250+speed);
     }
 
 

@@ -1,3 +1,5 @@
+// describe the valley diagonal folds
+
 const stateMachine = {
     state: 'state_0',
     transitions: {
