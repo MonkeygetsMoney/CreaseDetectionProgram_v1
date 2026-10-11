@@ -1,3 +1,5 @@
+// describe the mountain diagonal folds
+
 const stateMachine = {
     state: 'state_0',
     transitions: {

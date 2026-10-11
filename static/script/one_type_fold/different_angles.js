@@ -7,6 +7,7 @@ let x2 = 500;
 let y1 = 0;
 let y2 = 0;
 
+
 function setup() {
     createCanvas(500, 500);
     background(255);
