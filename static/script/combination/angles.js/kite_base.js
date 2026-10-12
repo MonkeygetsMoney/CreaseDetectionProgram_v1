@@ -30,7 +30,9 @@ let y1 = 0;
 let y2 = 0;
 
 // define the angles we want
-let angle1 = 45;
+const angle1 = [22.5, 45];
+amount = 500/(angle1.length * 2);  // amount of lines run with respect to angles
+
 
 
 function setup() {
@@ -52,32 +54,58 @@ function draw() {
     const bottomColor = color(endR, endG, endB);
 
     if (stateMachine.state === 'state_0') {
-        a += angle1/250; // 45 degrees for 250 times
-        a = constrain(a, 0, angle1);
-        linecolor = lerpColor(topColor, bottomColor, a/angle1);
-        stroke(linecolor);
-        y1 = y_coordinate(500, a);
-        line(x1, y1, x2, y2);
-        //console.log(y_coordinate(500, a));
-        //console.log(b);
 
-        if (a >= 45) { // slightly bigger than 45
+        a += angle1[0]/amount; // 45 degrees for 250 times
+        a = constrain(a, 0, angle1[0]);
+
+        linecolor = lerpColor(topColor, bottomColor, a/angle1[0]);
+        stroke(linecolor);
+        b = y_coordinate(500, a);
+        line(0, b, 500, 0);
+        line(500-b, 500, 500, 0);
+
+        if (a == angle1[0]) { // slightly bigger than 45
             stateMachine.increase();
             a = 0;
         }
     }
 
     else if (stateMachine.state === 'state_1') {
-        a += (angle1/250);
-        a = constrain(a, 0, angle1);
+        a += angle1[0]/amount;
+        a = constrain(a, 0, angle1[0]);
 
-        for (x = 0; x < angle1; x += angle1/250) {
-            linecolor = lerpColor(topColor, bottomColor, (x-a)/angle1);
+        for (x = 0; x < angle1[0]; x += angle1[0]/250) {
+            linecolor = lerpColor(topColor, bottomColor, (x-a)/angle1[0]);
             stroke(linecolor);
-            y1 = y_coordinate(500, x);
-            line(x1, y1, x2, y2);
+            b = y_coordinate(500, x);
+            line(0, b, 500, 0);
+            line(500-b, 500, 500, 0);
         }
 
+        linecolor = lerpColor(topColor, bottomColor, a/angle1[0]);
+        stroke(linecolor);
+        b = y_coordinate(500, a+22.5); // transition into second fold
+        line(0, b, 500, 0);
+        line(500-b, 500, 500, 0);
+        console.log(b)
+
+        if (a == angle1[0]) { // may not need angle1[0] but keep it as reference for now
+            stateMachine.increase();
+            a = 0;
+        }
+    }
+
+    else if (stateMachine.state === 'state_2') {
+        a += angle1[0]/amount;
+        a = constrain(a, 0, angle1[0]);
+
+        for (x = 0; x < angle1[0]; x += angle1[0]/250) {
+            linecolor = lerpColor(topColor, bottomColor, (x-a)/angle1[0]);
+            stroke(linecolor);
+            b = y_coordinate(500, x+22.5);
+            line(0, b, 500, 0);
+            line(500-b, 500, 500, 0);
+        }
     }
 }
 
@@ -88,14 +116,14 @@ function easeOut(x) {
 
 // define function to get height b (coordinate)
 // on the edges of triangle will remain constant
-function y_coordinate(length, angle) {
+function y_coordinate(cos_length, angle) {
     let diagonal_len = 0;
     let b_square = 0
     let b = 0;
 
     angle = angle * (PI/180);
-    diagonal_len = Math.pow((length / Math.cos(angle)), 2);
-    b_square = diagonal_len - Math.pow(length, 2);
+    diagonal_len = Math.pow((cos_length / Math.cos(angle)), 2);
+    b_square = diagonal_len - Math.pow(cos_length, 2);
     b = Math.sqrt(b_square);
     //b = Math.abs(b_square);
 
