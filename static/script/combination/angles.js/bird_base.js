@@ -53,7 +53,7 @@ function draw() {
     const bottomColor = color(endR, endG, endB);
 
     if (stateMachine.state === 'state_0') {
-        a += angle1[0]/amount; // 45 degrees for 250 times
+        a += angle1[0]/amount; // 22.5 degrees for 250 times
         a = constrain(a, 0, angle1[0]);
 
         linecolor = lerpColor(topColor, bottomColor, a/angle1[0]);
@@ -67,6 +67,12 @@ function draw() {
         line(0, 500, 250, 500-b)
         line(500, 500, 500-b, 250)
         line(500, 500, 250, 500-b)
+        console.log(b)
+
+        stroke('red')
+        b = y_coordinate(250, a)
+        line(0, 0, 250, 250-b)
+        console.log(b)
 
         if (a == angle1[0]) { // slightly bigger than 45
             stateMachine.increase();
@@ -76,7 +82,7 @@ function draw() {
 
     else if (stateMachine.state == 'state_1') {
         a += angle1[0]/amount;
-        a = constrain(a, onabort, angle1[0]);
+        a = constrain(a, 0, angle1[0]);
 
         for (x=0; x<angle1[0]; x+=angle1[0]/250) {
             linecolor = lerpColor(topColor, bottomColor, (x-a)/angle1[0]);
