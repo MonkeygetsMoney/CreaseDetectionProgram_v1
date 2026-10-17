@@ -53,6 +53,7 @@ function draw() {
     const bottomColor = color(endR, endG, endB);
 
     if (stateMachine.state === 'state_0') {
+        
         a += angle1[0]/amount; // 22.5 degrees for 250 times
         a = constrain(a, 0, angle1[0]);
 
@@ -67,11 +68,16 @@ function draw() {
         line(0, 500, 250, 500-b)
         line(500, 500, 500-b, 250)
         line(500, 500, 250, 500-b)
-        console.log(b)
 
-        stroke('red')
-        b = y_coordinate(250, a)
-        line(0, 0, 250, 250-b)
+        b = y_coordinate(250, 45-a)
+        line(0, 0, 250, b)
+        line(0, 0, b, 250)
+        line(500, 0, 250, b)
+        line(500, 0, 500-b, 250)
+        line(0, 500, b, 250)
+        line(0, 500, 250, 500-b)
+        line(500, 500, 500-b, 250)
+        line(500, 500, 250, 500-b)
         console.log(b)
 
         if (a == angle1[0]) { // slightly bigger than 45
