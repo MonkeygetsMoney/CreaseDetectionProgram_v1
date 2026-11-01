@@ -59,6 +59,8 @@ function draw() {
 
         linecolor = lerpColor(topColor, bottomColor, a/angle1[0]);
         stroke(linecolor);
+
+        // this is the outside of the bird base
         b = y_coordinate(250, a);
         line(250, b, 500, 0);
         line(500-b, 250, 500, 0)
@@ -69,6 +71,7 @@ function draw() {
         line(500, 500, 500-b, 250)
         line(500, 500, 250, 500-b)
 
+        // this is the inside of the bird base
         b = y_coordinate(250, 45-a)
         line(0, 0, 250, b)
         line(0, 0, b, 250)
@@ -78,9 +81,8 @@ function draw() {
         line(0, 500, 250, 500-b)
         line(500, 500, 500-b, 250)
         line(500, 500, 250, 500-b)
-        console.log(b)
 
-        if (a == angle1[0]) { // slightly bigger than 45
+        if (a == angle1[0]) { // slightly bigger than 22.5
             stateMachine.increase();
             a = 0;
         }
@@ -131,7 +133,7 @@ function y_coordinate(cos_length, angle) {
     diagonal_len = Math.pow((cos_length / Math.cos(angle)), 2);
     b_square = diagonal_len - Math.pow(cos_length, 2);
     b = Math.sqrt(b_square);
-    //b = Math.abs(b_square);
+    // b = Math.abs(b_square); enable this would create some cool effect
 
     return b;
 }
