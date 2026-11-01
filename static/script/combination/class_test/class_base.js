@@ -1,3 +1,25 @@
+class StateMachine {
+    constructor() {
+        this.state = 'state_0';
+        this.transition = {
+            state_0: { increase: 'state_1', decrease: 'state_0' },
+            state_1: { increase: 'state_2', decrease: 'state_0' },
+        }
+    }
+
+    increase() {
+        this.state = this.transition[this.state].increase;
+        return this.state
+    }
+
+    decrease() {
+        this.state = this.transition[this.state].decrease;
+        return this.state
+    }
+}
+const state = new StateMachine();
+console.log(state.increase())
+
 class birdBase {
     constructor(angle, topColor, bottomColor) {
         this.angle = angle; // angle for the line to travel
@@ -122,12 +144,12 @@ function setup() {
 
     const topColor = color(startR, startG, startB);
     const bottomColor = color(endR, endG, endB);
-    bird = new birdBase(22.5, topColor, bottomColor); // create this in the set up
-    kite = new kiteBase(22.5, topColor, bottomColor);
+    //bird = new birdBase(22.5, topColor, bottomColor); // create this in the set up
+    //kite = new kiteBase(22.5, topColor, bottomColor);
 
 }
 
 function draw() {
     //bird.animate()
-    kite.animate()
+    //kite.animate()
 }

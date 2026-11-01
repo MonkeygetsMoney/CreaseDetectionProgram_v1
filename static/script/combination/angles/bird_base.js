@@ -1,5 +1,5 @@
 // to perform bird base, divide the paper into 4 squares
-
+// this an object uses once only
 const stateMachine = {
     state: 'state_0',
     transitions: {
