@@ -1,24 +1,46 @@
 class StateMachine {
     constructor() {
-        this.state = 'state_0';
+        this.state = '0';
+        // this is a dict for state
         this.transition = {
-            state_0: { increase: 'state_1', decrease: 'state_0' },
-            state_1: { increase: 'state_2', decrease: 'state_0' },
+            '0': { increase: '1', decrease: '0' },
         }
     }
 
+    update() {
+        // update the state machine
+        // can create a new state everytime it's called
+        const next_state = String(Number(this.state) + 1);
+        let previous_state; // use let since we changing variable
+        if (this.state == '0'){
+            previous_state = '0'
+        }
+        else{
+            previous_state = String(Number(this.state) - 1);
+        }
+        // add new state
+        this.transition[this.state] = { increase: next_state, decrease: previous_state };
+    }
+
     increase() {
+        // increase the state
+        this.update()
         this.state = this.transition[this.state].increase;
         return this.state
     }
 
     decrease() {
+        // decrease the state
+        this.update()
         this.state = this.transition[this.state].decrease;
         return this.state
     }
 }
 const state = new StateMachine();
-console.log(state.increase())
+console.log(state.state)
+console.log(state.transition)
+console.log(state.decrease())
+console.log(state.decrease());
 
 class birdBase {
     constructor(angle, topColor, bottomColor) {
