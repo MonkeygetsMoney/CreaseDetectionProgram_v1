@@ -2,9 +2,7 @@ class StateMachine {
     constructor() {
         this.state = '0';
         // this is a dict for state
-        this.transition = {
-            '0': { increase: '1', decrease: '0' },
-        }
+        this.transition = {}
     }
 
     update() {
@@ -36,11 +34,6 @@ class StateMachine {
         return this.state
     }
 }
-const state = new StateMachine();
-console.log(state.state)
-console.log(state.transition)
-console.log(state.decrease())
-console.log(state.decrease());
 
 class birdBase {
     constructor(angle, topColor, bottomColor) {
@@ -48,6 +41,8 @@ class birdBase {
         this.topColor = topColor;
         this.bottomColor = bottomColor;
         this.a = 0;
+        this.state = new StateMachine(); // put here as a set up
+
     }
 
     // method for calculate the y coordinate
@@ -94,13 +89,44 @@ class birdBase {
         return this.a
     }
 
-    animate() {
+    animate_appear() {
         const changing_angle = this.changing_angle(); // default to const when don't change variable for one interval
         const linecolor = lerpColor(this.topColor, this.bottomColor, changing_angle/22.5);
         stroke(linecolor);
         this.outside(changing_angle);
         this.inside(changing_angle);
 
+    }
+
+    animate_disappear() {
+        const angle = this.changing_angle();
+
+        // the disappearing phase
+        for (let x=0; x < this.angle; x += this.angle/250) {
+            const linecolor = lerpColor(this.topColor, this.bottomColor, (x-angle)/this.angle);
+            stroke(linecolor)
+
+            // use x as a way to delete the line drawn
+            this.outside(x)
+            this.inside(x)
+        }
+    }
+
+    animate() {
+        if (this.state.state == '0') {
+            this.animate_appear();
+            
+            if (this.a == this.angle) {
+                this.state.increase();
+                this.a = 0; // reset the angle
+            }
+
+        } 
+
+        else if (this.state.state == '1') {
+
+            this.animate_disappear();
+        }
     }
 
 }
@@ -111,6 +137,10 @@ class kiteBase {
         this.topColor = topColor;
         this.bottomColor = bottomColor;
         this.a = 0;
+
+        // put state machine here so able to update and save the current state
+        this.state = new StateMachine();
+
     }
 
     // method for changing the angle
@@ -144,13 +174,45 @@ class kiteBase {
         line(500-b, 500, 500, 0);
     }
 
-    animate() {
-        const angle = this.changing_angle();
+    animate_appear() {
+        const angle = this.changing_angle(); // changing the current from 0 to input angle
         const linecolor = lerpColor(this.topColor, this.bottomColor, angle/this.angle);
         stroke(linecolor);
         this.outside(angle);
         this.inside(angle);
     }
+
+    animate_disappear() {
+        const angle = this.changing_angle();
+
+        // the disappearing phase
+        for (let x=0; x < this.angle; x += this.angle/250) {
+            const linecolor = lerpColor(this.topColor, this.bottomColor, (x-angle)/this.angle);
+            stroke(linecolor)
+
+            // use x as a way to delete the line drawn
+            this.outside(x);
+            this.inside(x);
+        }
+    }
+
+    animate() {
+        if (state.state == '0') {
+            this.animate_appear();
+
+            if (this.a == this.angle) {
+                state.increase();
+                this.a = 0; // reset the angle
+            }
+
+        } 
+
+        if (state.state == '1') {
+            this.animate_disappear();
+        }
+    }
+
+
 }
 function setup() {
     createCanvas(500, 500);
@@ -166,12 +228,13 @@ function setup() {
 
     const topColor = color(startR, startG, startB);
     const bottomColor = color(endR, endG, endB);
-    //bird = new birdBase(22.5, topColor, bottomColor); // create this in the set up
+    bird = new birdBase(22.5, topColor, bottomColor); // create this in the set up
     //kite = new kiteBase(22.5, topColor, bottomColor);
 
+    state = new StateMachine()
 }
 
 function draw() {
-    //bird.animate()
+    bird.animate()
     //kite.animate()
 }
